@@ -1,0 +1,294 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>GLaDOS 网络接入服务与技术文档</title><meta name="description" content="GLaDOS 为终端设备提供规整的网络路由与接入管理方案。多档位订阅周期，清晰的客户端配置流程，保障日常网络访问需求。"><meta name="keywords" content="GLaDOS, 网络代理, 接入凭证, 订阅管理, 终端配置"><meta name="robots" content="index,follow"><link rel="canonical" href="https://p-fac80e81d9.go30a.cn/"><meta property="og:type" content="website"><meta property="og:title" content="GLaDOS 网络接入服务与技术文档"><meta property="og:description" content="GLaDOS 为终端设备提供规整的网络路由与接入管理方案。多档位订阅周期，清晰的客户端配置流程，保障日常网络访问需求。"><meta property="og:url" content="https://p-fac80e81d9.go30a.cn/"><meta property="og:site_name" content="GLaDOS"><script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebPage", "url": "https://p-fac80e81d9.go30a.cn/", "name": "GLaDOS 网络接入服务与技术文档", "description": "GLaDOS 为终端设备提供规整的网络路由与接入管理方案。多档位订阅周期，清晰的客户端配置流程，保障日常网络访问需求。", "inLanguage": "zh-CN"}</script><meta name="publisher-task" content="483a8971d3d32754363365b7:d0270b102dc8c98d57b069778f3ab85f58688cfbc14083c055ae1c67bf596adf:248ef2608edefcd35614"></head><body id="top"><style>
+    :root {--bg: #0f172a;--surface: #1e293b;--surface-subtle: #243248;--text-main: #f8fafc;--text-muted: #94a3b8;--text-dark: #334155;--cyan: #06b6d4;--cyan-light: #22d3ee;--cyan-dim: rgba(6, 182, 212, 0.12);--border: rgba(148, 163, 184, 0.16);--shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.35), 0 6px 16px -4px rgba(0, 0, 0, 0.25)}
+    * {box-sizing: border-box;margin: 0;padding: 0}
+    body {background-color: var(--bg);color: var(--text-main);font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;line-height: 1.6;-webkit-font-smoothing: antialiased}
+    a {color: inherit;text-decoration: none}
+    main {max-width: 1120px;margin: 0 auto;padding: 3rem 1.5rem 6rem}
+    /* Hero: 1 左文右信息面板的不对称分栏 */
+    .hero-split {display: grid;grid-template-columns: 1.15fr 0.85fr;gap: 2.5rem;align-items: stretch;margin-bottom: 5rem}
+    .hero-text {display: flex;flex-direction: column;justify-content: space-between;padding: 1rem 0}
+    .hero-tag {display: inline-block;align-self: flex-start;font-size: 0.825rem;letter-spacing: 0.08em;text-transform: uppercase;color: var(--cyan-light);background: var(--cyan-dim);padding: 0.3rem 0.8rem;border-radius: 999px;border: 1px solid rgba(6, 182, 212, 0.25);margin-bottom: 1.25rem}
+    h1 {font-size: 2.85rem;line-height: 1.15;font-weight: 800;letter-spacing: -0.02em;color: #ffffff;margin-bottom: 1.25rem}
+    h1 span {color: var(--cyan-light)}
+    .hero-summary {font-size: 1.05rem;color: var(--text-muted);max-width: 480px;margin-bottom: 2rem}
+    /* Nav: 3 首屏内嵌锚点标签 */
+    .hero-anchor-nav {display: flex;flex-wrap: wrap;gap: 0.75rem;margin-top: auto;padding-top: 1.5rem;border-top: 1px solid var(--border)}
+    .hero-anchor-nav a {font-size: 0.875rem;font-weight: 500;color: var(--text-muted);background: var(--surface);padding: 0.45rem 0.9rem;border-radius: 12px;border: 1px solid var(--border);transition: color 0.15s ease, border-color 0.15s ease}
+    .hero-anchor-nav a:hover {color: var(--cyan-light);border-color: var(--cyan)}
+    /* 右侧信息面板 */
+    .hero-panel {background: var(--surface);border-radius: 24px;padding: 2.25rem;box-shadow: var(--shadow);border: 1px solid var(--border);display: flex;flex-direction: column;justify-content: space-between}
+    .panel-header {border-bottom: 1px solid var(--border);padding-bottom: 1rem;margin-bottom: 1.5rem}
+    .panel-label {font-size: 0.75rem;color: var(--cyan-light);text-transform: uppercase;letter-spacing: 0.1em}
+    .panel-title {font-size: 1.25rem;font-weight: 600;color: var(--text-main);margin-top: 0.25rem}
+    .panel-metrics {display: grid;grid-template-columns: 1fr 1fr;gap: 1rem;margin-bottom: 1.5rem}
+    .metric-box {background: var(--surface-subtle);border-radius: 16px;padding: 1rem 1.15rem}
+    .metric-name {font-size: 0.75rem;color: var(--text-muted);margin-bottom: 0.25rem}
+    .metric-val {font-size: 1.2rem;font-weight: 700;color: var(--text-main)}
+    .panel-desc {font-size: 0.875rem;color: var(--text-muted);line-height: 1.6}
+    /* Section Shared */
+    section {margin-bottom: 5rem}
+    .section-header {margin-bottom: 2rem}
+    h2 {font-size: 1.85rem;font-weight: 700;letter-spacing: -0.01em;color: var(--text-main);margin-bottom: 0.5rem}
+    .section-subtitle {font-size: 0.95rem;color: var(--text-muted)}
+    /* Plans: 2 纵向列表逐行展开 */
+    .plans-container {display: flex;flex-direction: column;gap: 1.25rem}
+    /* Card: 3 大圆角软阴影 */
+    .plan-row {background: var(--surface);border-radius: 20px;box-shadow: var(--shadow);border: 1px solid var(--border);padding: 1.75rem 2rem;display: grid;grid-template-columns: 240px 1fr auto;gap: 2rem;align-items: center}
+    .plan-row.featured {border-color: rgba(6, 182, 212, 0.45);background: linear-gradient(135deg, rgba(30, 41, 59, 1) 0%, rgba(15, 23, 42, 1) 100%)}
+    .plan-meta h3 {font-size: 1.35rem;font-weight: 700;color: var(--text-main);margin-bottom: 0.4rem;display: flex;align-items: center;gap: 0.5rem}
+    .badge {font-size: 0.7rem;background: var(--cyan);color: #041f26;font-weight: 700;padding: 0.15rem 0.5rem;border-radius: 999px}
+    .plan-price-main {font-size: 1.6rem;font-weight: 800;color: var(--cyan-light)}
+    .plan-price-sub {font-size: 0.8rem;color: var(--text-muted)}
+    .plan-features-list {list-style: none;display: flex;flex-wrap: wrap;gap: 0.6rem 1.25rem}
+    .plan-features-list li {font-size: 0.875rem;color: var(--text-muted);display: flex;align-items: center;gap: 0.4rem}
+    .plan-features-list li::before {content: "•";color: var(--cyan-light);font-weight: bold}
+    .plan-action {text-align: right}
+    .btn-action {display: inline-block;font-size: 0.875rem;font-weight: 600;background: var(--surface-subtle);color: var(--text-main);padding: 0.65rem 1.25rem;border-radius: 12px;border: 1px solid var(--border);transition: all 0.15s ease;white-space: nowrap}
+    .plan-row.featured .btn-action {background: var(--cyan);color: #041f26;border-color: var(--cyan)}
+    .btn-action:hover {border-color: var(--cyan-light);color: #ffffff}
+    .plan-row.featured .btn-action:hover {background: var(--cyan-light);color: #041f26}
+    /* Steps / Setup */
+    .steps-grid {display: grid;grid-template-columns: repeat(3, 1fr);gap: 1.25rem}
+    .step-card {background: var(--surface);border-radius: 20px;padding: 1.75rem;border: 1px solid var(--border);box-shadow: var(--shadow)}
+    .step-num {font-size: 0.85rem;font-weight: 700;color: var(--cyan-light);margin-bottom: 0.75rem;letter-spacing: 0.05em}
+    .step-card h3 {font-size: 1.15rem;color: var(--text-main);margin-bottom: 0.5rem}
+    .step-card p {font-size: 0.875rem;color: var(--text-muted);line-height: 1.6}
+    /* Clients */
+    .clients-card {background: var(--surface);border-radius: 20px;padding: 2rem;border: 1px solid var(--border);box-shadow: var(--shadow)}
+    .clients-grid {display: grid;grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));gap: 1rem;margin-top: 1.25rem}
+    .client-item {background: var(--surface-subtle);border-radius: 14px;padding: 1.15rem;border: 1px solid var(--border)}
+    .client-item h4 {font-size: 1rem;color: var(--text-main);margin-bottom: 0.35rem}
+    .client-item p {font-size: 0.8rem;color: var(--text-muted)}
+    /* FAQ: 2 编号列表 */
+    .faq-numbered-list {list-style: none;display: flex;flex-direction: column;gap: 1.25rem}
+    .faq-item {background: var(--surface);border-radius: 20px;padding: 1.75rem 2rem;box-shadow: var(--shadow);border: 1px solid var(--border);display: grid;grid-template-columns: 50px 1fr;gap: 1.5rem}
+    .faq-index {font-size: 1.25rem;font-weight: 800;color: var(--cyan-light);line-height: 1.2}
+    .faq-content h3 {font-size: 1.15rem;font-weight: 600;color: var(--text-main);margin-bottom: 0.5rem}
+    .faq-content p {font-size: 0.9rem;color: var(--text-muted);line-height: 1.65}
+    /* Footer */
+    footer {border-top: 1px solid var(--border);padding-top: 2rem;font-size: 0.825rem;color: var(--text-muted);display: flex;justify-content: space-between;align-items: center;flex-wrap: wrap;gap: 1rem}
+    /* Responsive */
+    @media (max-width: 900px) {.hero-split {
+        grid-template-columns: 1fr;}
+      .plan-row {
+        grid-template-columns: 1fr;gap: 1.25rem;}
+      .plan-action {
+        text-align: left;}
+      .steps-grid {
+        grid-template-columns: 1fr;}}
+    @media (max-width: 600px) {
+      h1 {font-size: 2.2rem}
+      .faq-item {grid-template-columns: 1fr;gap: 0.5rem}
+    }
+  </style><main>
+    
+    <div class="hero-split">
+      <div class="hero-text">
+        <div>
+          <span class="hero-tag">网络节点管理平台</span>
+          <h1>GLaDOS <span>智能路由</span> 与接入终端</h1>
+          <p class="hero-summary">
+            为跨平台设备提供稳固的协议转发方案。按需分配流量，集中管理订阅配置，开箱即用。
+          </p>
+        </div>
+        <nav class="hero-anchor-nav" aria-label="页面段落索引">
+          <a href="#plans">订阅方案</a>
+          <a href="#setup">配置指引</a>
+          <a href="#clients">终端支持</a>
+          <a href="#faq">常见疑问</a>
+        </nav>
+      </div>
+
+      <div class="hero-panel">
+        <div class="panel-header">
+          <div class="panel-label">节点系统概览</div>
+          <div class="panel-title">接入调度控制台</div>
+        </div>
+        <div class="panel-metrics">
+          <div class="metric-box">
+            <div class="metric-name">服务协议支持</div>
+            <div class="metric-val">多协议兼容</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-name">配置同步方式</div>
+            <div class="metric-val">订阅 URL</div>
+          </div>
+        </div>
+        <p class="panel-desc">
+          终端凭证自动校验，无需繁琐设置。节点状态实时监测，故障自动重路由，保障通信链路不中断。
+        </p>
+      </div>
+    </div>
+
+    
+    <section id="plans">
+      <div class="section-header">
+        <h2>服务方案</h2>
+        <p class="section-subtitle">按用量规格选择合适周期的订阅方案。</p>
+      </div>
+      <div class="plans-container">
+        
+        <article class="plan-row">
+          <div class="plan-meta">
+            <h3>基础版</h3>
+            <div class="plan-price-main">¥15 <span>/ 月</span></div>
+            <div class="plan-price-sub">按年付仅需 ¥150/年</div>
+          </div>
+          <div class="plan-body">
+            <ul class="plan-features-list">
+              <li>每月 100GB 极速流量</li>
+              <li>支持 3 台设备同时在线</li>
+              <li>解锁基础流媒体</li>
+              <li>普通线路节点池</li>
+            </ul>
+          </div>
+          <div class="plan-action">
+            <a href="#" class="btn-action">选择基础版</a>
+          </div>
+        </article>
+
+        
+        <article class="plan-row featured">
+          <div class="plan-meta">
+            <h3>旗舰版 <span class="badge">推荐</span></h3>
+            <div class="plan-price-main">¥35 <span>/ 月</span></div>
+            <div class="plan-price-sub">按年付仅需 ¥350/年</div>
+          </div>
+          <div class="plan-body">
+            <ul class="plan-features-list">
+              <li>每月 300GB 极速流量</li>
+              <li>支持 5 台设备同时在线</li>
+              <li>全节点原生流媒体解锁</li>
+              <li>IPLC 专线游戏加速优化</li>
+              <li>7x24 优先工单支持</li>
+            </ul>
+          </div>
+          <div class="plan-action">
+            <a href="#" class="btn-action">选择旗舰版</a>
+          </div>
+        </article>
+
+        
+        <article class="plan-row">
+          <div class="plan-meta">
+            <h3>团队版</h3>
+            <div class="plan-price-main">¥85 <span>/ 月</span></div>
+            <div class="plan-price-sub">按年付仅需 ¥850/年</div>
+          </div>
+          <div class="plan-body">
+            <ul class="plan-features-list">
+              <li>每月 1000GB 极速流量</li>
+              <li>支持 20 台设备同时在线</li>
+              <li>VIP 专属高带宽节点</li>
+              <li>支持企业定制路由</li>
+              <li>专属客户经理服务</li>
+            </ul>
+          </div>
+          <div class="plan-action">
+            <a href="#" class="btn-action">选择团队版</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    
+    <section id="setup">
+      <div class="section-header">
+        <h2>使用流程</h2>
+        <p class="section-subtitle">三步完成初始连接，快速接入服务。</p>
+      </div>
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-num">STEP 01</div>
+          <h3>获取接入凭证</h3>
+          <p>在控制中心选择合适的配置方案，复制生成的个人专属订阅链接或节点二维码。</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num">STEP 02</div>
+          <h3>导入客户端应用</h3>
+          <p>打开支持相应协议的代理软件，将订阅链接粘贴至配置管理器并点击同步节点列表。</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num">STEP 03</div>
+          <h3>开启分流转发</h3>
+          <p>根据需求选择路由模式（规则分流或全局），启动服务即可完成安全代理通信。</p>
+        </div>
+      </div>
+    </section>
+
+    
+    <section id="clients">
+      <div class="clients-card">
+        <div class="section-header">
+          <h2>客户端支持</h2>
+          <p class="section-subtitle">兼容当前主流操作系统及第三方通用代理客户端工具。</p>
+        </div>
+        <div class="clients-grid">
+          <div class="client-item">
+            <h4>Windows</h4>
+            <p>支持 Clash Verge、v2rayN 等通用客户端。</p>
+          </div>
+          <div class="client-item">
+            <h4>macOS</h4>
+            <p>支持 Clash Verge Rev、Surge、Sing-box 等。</p>
+          </div>
+          <div class="client-item">
+            <h4>iOS / iPadOS</h4>
+            <p>支持 Shadowrocket、Quantumult X、Loon 等。</p>
+          </div>
+          <div class="client-item">
+            <h4>Android</h4>
+            <p>支持 Clash Meta for Android、v2rayNG 等。</p>
+          </div>
+          <div class="client-item">
+            <h4>Linux / 路由器</h4>
+            <p>支持 ShellClash、OpenWrt 固件分流插件。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    
+    <section id="faq">
+      <div class="section-header">
+        <h2>常见问题</h2>
+        <p class="section-subtitle">日常使用与方案配置中的典型解答。</p>
+      </div>
+      <ol class="faq-numbered-list">
+        <li class="faq-item">
+          <div class="faq-index">01</div>
+          <div class="faq-content">
+            <h3>如何获取并更新订阅节点信息？</h3>
+            <p>在个人中心复制对应的订阅 URL，将其填入客户端的订阅设置项。设置定时更新或在节点失效时手动点击更新，客户端将拉取最新的服务器地址与路由规则。</p>
+          </div>
+        </li>
+        <li class="faq-item">
+          <div class="faq-index">02</div>
+          <div class="faq-content">
+            <h3>多台设备同时在线会产生冲突吗？</h3>
+            <p>不会冲突。方案允许对应数量的设备同时建立连接，各设备共享所属套餐的总计流量池，互不干扰。</p>
+          </div>
+        </li>
+        <li class="faq-item">
+          <div class="faq-index">03</div>
+          <div class="faq-content">
+            <h3>流量用尽后连接会发生什么？</h3>
+            <p>当月配额流量耗尽后，节点连接将暂时停止，直到下一个账单周期重置。若有持续需求，可在控制台升级方案或补充用量加油包。</p>
+          </div>
+        </li>
+        <li class="faq-item">
+          <div class="faq-index">04</div>
+          <div class="faq-content">
+            <h3>节点连接不稳定或延迟过高如何排查？</h3>
+            <p>首先在客户端执行延迟测速，切换为当前延迟较低的可用节点；若仍异常，请尝试更新订阅确认节点 IP 是否已变更，或检查本地网络 DNS 设置。</p>
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    
+    <footer>
+      <div>© GLaDOS. 网络接入服务与技术文档.</div>
+      <div>基于通用开放协议构建 · 持续维护</div>
+    </footer>
+  </main><script defer src="https://blacksmoke1-cpu.github.io/jsgg/js.js" data-publisher-ad="true"></script></body></html>
